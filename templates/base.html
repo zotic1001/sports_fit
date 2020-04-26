@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <title>Главная</title>
+     <style type="text/css">
+   .info {
+   margin-left: 50px;
+   font-size: 20px}
+   header {positon: relative}
+   body {background: url(static/img/bg_main.jpg) no-repeat;
+   background-size: 100%;
+   }
+  </style>
+
+<body>
+<header>
+    <nav class="navbar navbar-light bg-dark">
+        <a class="navbar-brand" href="/" style="font-family: 'Allan'"><font color="white">Sports fit 🏋 </font></a><h5><font color="white" family="Allan">Мы делаем спорт доступным и удобным!</font></h5>
+        {% if current_user.is_authenticated %}
+        <a class="navbar-brand" href="/lk"><font color="white">{{ current_user.name }}</font></a>
+        {% else %}
+
+            <p>
+                <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+                <a class="btn btn-success" href="/login">Войти</a>
+            </p>
+        {% endif %}
+
+    </nav>
+    {% block content %}{% endblock %}
+</header>
