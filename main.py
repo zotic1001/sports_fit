@@ -5,6 +5,7 @@ from data.traning_program import Traning
 from registerform import RegisterForm
 from loginform import LoginForm
 from changeform import ChangeForm
+from training_form import TraningForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import reqparse, abort, Api, Resource
 import users_resource
@@ -40,6 +41,21 @@ def load_user(user_id):
 def lk():
     return render_template("lk.html", user=current_user, title="Личный кабинет", goal=goal(current_user.height, current_user.weight,
                                                                                            current_user.age, current_user.gender, current_user.body_type))
+@app.route("/add_program", methods=["GET", "POST"])
+def add_program():
+    form = TraningForm()
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        traning = Traning(
+            title=form.title.data,
+            duration=form.duration.data,
+            category=form.category.data,
+            program=form.program.data
+        )
+        session.add(traning)
+        session.commit()
+        return redirect("/")
+    return render_template("programs_add.html", form=form, title="Добавление программы")
 
 
 @app.route('/login', methods=['GET', 'POST'])
