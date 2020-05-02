@@ -22,7 +22,6 @@
 <header>
     <nav class="navbar navbar-light bg-dark">
         <a class="navbar-brand" href="/" style="font-family: 'Allan'"><font color="white">Sports fit </font></a>
-        <h5><a href="https://www.стопкоронавирус.рф"><font color="red">Сидите дома</font></a></h5>
         {% if current_user.is_authenticated %}
         <a class="navbar-brand" href="/lk"><font color="white">{{ current_user.name }}</font></a>
         {% else %}

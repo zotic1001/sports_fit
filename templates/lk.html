@@ -11,7 +11,7 @@ font-size: 24px;
   letter-spacing: 0.08em;
 color:black;
 font-size:32px;"><font color="white">Приветствуем вас, {{user.name}}</font> </h2>
-<p class="info"><font color="white">Ваш вес {{user.weight}} кг                          </font>   <a class="btn btn-primary " href="/change">Изменить</a><br/>
+<p class="info"><font color="white">Ваш вес {{user.weight}} кг                          </font>   <a class="btn btn-primary " href="/change">Изменить</a><br/><br/>
 <font color="white">Ваш рост {{user.height}} см <a class="btn btn-primary " href="/change">Изменить</a><br/><br/>
    {% if goal < 0%}
     Вам нужно похудеть на {{goal}} кг
@@ -22,6 +22,7 @@ font-size:32px;"><font color="white">Приветствуем вас, {{user.nam
     {%endif%}<br/>
 </font></p>
 <p align="center"><a class="btn btn-primary" href="/programs"><font color="white">Посмотреть программы тренировок для меня</font></a>
+    <a class="btn btn-primary" href="/add_program"><font color="white">Добавить свою программу тренировок</font></a>
     <a class="btn btn-success" href="/logout"><font color="white">Выйти</font></a></p>
 
 

@@ -37,6 +37,8 @@ def load_user(user_id):
     session = db_session.create_session()
     return session.query(User).get(user_id)
 
+
+@login_required
 @app.route("/lk")
 def lk():
     return render_template("lk.html", user=current_user, title="Личный кабинет", goal=goal(current_user.height, current_user.weight,
@@ -113,21 +115,35 @@ def programs():
     goas = goal(current_user.height, current_user.weight, current_user.age, current_user.gender, current_user.body_type)
     hk = ""
     if "M" in set_category(current_user.gender, goas):
-        hk += "Man "
+        hk += "Мужчина "
     else:
-        hk += "Women "
-    if "N" in set_category(current_user.gender, goas):
-        hk += "Normal-weight"
-    elif "VF" in set_category(current_user.gender, goas):
-        hk += "Very-fat weight"
-    elif "VT" in set_category(current_user.gender, goas):
-        hk += "Very-thin weight"
-    elif "F" in set_category(current_user.gender, goas):
-        hk += "Fat-weight"
-    elif "S" in set_category(current_user.gender, goas):
-        hk += "sport"
-    elif "T" in set_category(current_user.gender, goas):
-        hk += "thin weight"
+        hk += "Женщина "
+    if "M" in set_category(current_user.gender, goas):
+        if "N" in set_category(current_user.gender, goas):
+            hk += "нормального веса"
+        elif "VF" in set_category(current_user.gender, goas):
+            hk += "очень полный"
+        elif "VT" in set_category(current_user.gender, goas):
+            hk += "очень худой"
+        elif "F" in set_category(current_user.gender, goas):
+            hk += "полный"
+        elif "S" in set_category(current_user.gender, goas):
+            hk += "спортивный вес"
+        elif "T" in set_category(current_user.gender, goas):
+            hk += "худой"
+    else:
+        if "N" in set_category(current_user.gender, goas):
+            hk += "нормального веса"
+        elif "VF" in set_category(current_user.gender, goas):
+            hk += "очень полная"
+        elif "VT" in set_category(current_user.gender, goas):
+            hk += "очень худая"
+        elif "F" in set_category(current_user.gender, goas):
+            hk += "полная"
+        elif "S" in set_category(current_user.gender, goas):
+            hk += "спортивный вес"
+        elif "T" in set_category(current_user.gender, goas):
+            hk += "худая"
 
     return render_template("programs.html", prog=prog, category=set_category(current_user.gender, goas), hk=hk)
 
@@ -140,7 +156,7 @@ def change():
         rows = session.query(User).filter(User.id == current_user.id).update({'weight': form.weight.data, "height": form.height.data, "age": form.age.data, "need": form.need.data})
         session.commit()
         return redirect('/lk')
-    return render_template('change.html', title='Изменение', form=form)
+    return render_template('change.html', title='Изменение', form=form, current_user=current_user)
 
 
 @app.route("/")

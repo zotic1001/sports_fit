@@ -32,7 +32,7 @@
     {{ form.csrf_token }}
     <p>
         {{ form.weight.label }}<br>
-        {{ form.weight(class="form-control") }}<br>
+        {{ form.weight(class="form-control", value=current_user.weight) }}<br>
         {% for error in form.weight.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
@@ -41,7 +41,7 @@
     </p>
     <p>
         {{ form.height.label }}<br>
-        {{ form.height(class="form-control") }}<br>
+        {{ form.height(class="form-control", value=current_user.height) }}<br>
         {% for error in form.height.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
@@ -50,7 +50,7 @@
     </p>
     <p>
         {{ form.age.label }}<br>
-        {{ form.age(class="form-control") }}<br>
+        {{ form.age(class="form-control", value=current_user.age) }}<br>
         {% for error in form.age.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
