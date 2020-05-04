@@ -9,7 +9,6 @@ app = Flask(__name__)
 api = Api(app)
 
 parser = reqparse.RequestParser()
-parser.add_argument('id', required=True)
 parser.add_argument('title', required=True)
 parser.add_argument('category', required=True)
 parser.add_argument("duration", required=True)
@@ -50,7 +49,6 @@ class TraningListResource(Resource):
         args = parser.parse_args()
         session = db_session.create_session()
         prog = Traning(
-            id=args['id'],
             title=args['title'],
             program=args['program'],
             duration=args['duration'],

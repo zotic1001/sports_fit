@@ -167,10 +167,16 @@ def search():
     form = SearchForm()
     if form.validate_on_submit():
         if form.duration.data != "":
-            prog = session.query(Traning).filter(Traning.duration == int(form.duration.data), Traning.category == form.category.data).all()
+            if form.category.data == "ALL":
+                prog = session.query(Traning).filter(Traning.duration == int(form.duration.data)).all()
+            else:
+                prog = session.query(Traning).filter(Traning.duration == int(form.duration.data), Traning.category == form.category.data).all()
             return render_template("finded.html", prog=prog)
         elif not (form.duration.data != ""):
-            prog = session.query(Traning).filter(Traning.category == form.category.data).all()
+            if form.category.data != "ALL":
+                prog = session.query(Traning).filter(Traning.category == form.category.data).all()
+            else:
+                prog = session.query(Traning).all()
             return render_template("finded.html", prog=prog)
     return render_template("search.html", title="Поиск", form=form, prog=False)
 @app.route("/")
