@@ -3,14 +3,12 @@ from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm, Form
 
 
-class TraningForm(FlaskForm):
-    title = StringField('Заголовок', validators=[DataRequired()])
-    program = TextAreaField("Содержание")
-    category = SelectField("Для кого эта программа", validators=[DataRequired()],
+class SearchForm(FlaskForm):
+    category = SelectField("Для кого эта программа",
                            choices=[("MN", "Мужчина нормального веса"), ("MF", "Мужчина полный"),
                                     ("MVF", "Мужчина очень полный"), ("MT", "Мужчина худой"),
                                     ("MVT", "Мужчина очень худой"), ("FN", "Женщина нормального веса"),
                                     ("FVF", "Женщина очень полная"), ("FF", "Женщина полная"),
                                     ("FVT", "Женщина очень худая"), ("FT", "Женщина худая")], coerce=str)
-    duration = IntegerField("Длительность программы в днях", validators=[DataRequired()])
-    submit = SubmitField('Применить')
+    duration = StringField("Длительность программы в днях")
+    submit = SubmitField('Поиск')

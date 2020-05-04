@@ -6,6 +6,7 @@ from registerform import RegisterForm
 from loginform import LoginForm
 from changeform import ChangeForm
 from training_form import TraningForm
+from searchform import SearchForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import reqparse, abort, Api, Resource
 import users_resource
@@ -159,6 +160,19 @@ def change():
     return render_template('change.html', title='Изменение', form=form, current_user=current_user)
 
 
+
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    session = db_session.create_session()
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.duration.data != "":
+            prog = session.query(Traning).filter(Traning.duration == int(form.duration.data), Traning.category == form.category.data).all()
+            return render_template("finded.html", prog=prog)
+        elif not (form.duration.data != ""):
+            prog = session.query(Traning).filter(Traning.category == form.category.data).all()
+            return render_template("finded.html", prog=prog)
+    return render_template("search.html", title="Поиск", form=form, prog=False)
 @app.route("/")
 def title():
     return render_template("title.html")

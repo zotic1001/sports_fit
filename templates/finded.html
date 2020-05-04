@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1><font color="white">Все программы по вашему запросу</font></h1>
+<a class="btn btn-primary" href="/search"><font color="white">Изменить параметры запроса</font></a>
+{% for item in prog%}
+
+<div class="col-md6 border rounded">
+    <h2><font color="white">{{item.title}}</font></h2>
+    <div>
+        <h5><font color="white">{{item.program}}</font></h5>
+    </div>
+    <div>
+        <font color="white">Длительность - {{item.duration}} дней</font>
+    </div>
+        {% set hk = ""%}
+        {%if "M" in item.category%}
+        {%set hk = hk + "Мужчин " %}
+        {%else%}
+        {% set hk = hk + "Женщин " %}
+        {%endif%}
+    {%if "M" in item.category%}
+        {%if "N" in item.category%}
+            {%set hk = hk + "нормального веса" %}
+        {% elif "VF" in item.category %}
+            {%set hk = hk + "очень полный" %}
+        {% elif "VT" in item.category %}
+            {%set hk = hk + "очень худой" %}
+        {% elif "F" in item.category %}
+            {%set hk = hk + "полный" %}
+        {% elif "S" in item.category %}
+            {%set hk = hk + "спортивный вес" %}
+        {% elif "T" in item.category %}
+            {%set hk = hk + "худой"%}
+        {%endif%}
+    {% else %}
+        {%if "N" in item.category%}
+            {%set hk = hk + "нормального веса" %}
+        {% elif "VF" in item.category %}
+            {%set hk = hk + "очень полная" %}
+        {% elif "VT" in item.category %}
+            {%set hk = hk + "очень худая" %}
+        {% elif "F" in item.category %}
+            {%set hk = hk + "полная"%}
+        {% elif "S" in item.category %}
+            {%set hk = hk + "спортивный вес" %}
+        {% elif "T" in item.category %}
+            {%set hk = hk + "худая"%}
+        {%endif%}
+    {%endif%}
+    <div><font color="white">Программа для {{hk}}</font></div>
+</div>
+{% endfor %}
+</body>
+{%endblock%}
+</html>
