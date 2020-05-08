@@ -1,9 +1,9 @@
 from wtforms import StringField, TextAreaField, SubmitField, FileField, SelectField, IntegerField
 from wtforms.validators import DataRequired
-from flask_wtf import FlaskForm, Form
+from flask_wtf import FlaskForm
 
 
-class TraningForm(FlaskForm):
+class TraningForm(FlaskForm):  # форма добавления программыв тренировок
     title = StringField('Заголовок', validators=[DataRequired()])
     program = TextAreaField("Содержание")
     category = SelectField("Для кого эта программа", validators=[DataRequired()],

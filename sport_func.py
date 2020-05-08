@@ -1,4 +1,5 @@
-def ideal_weight(height, age, gender, body_type):
+def ideal_weight(height, age, gender, body_type):  # расчёт идеального веса человека
+    # с учетом роста, возраста, пола, телосложения(по формулам из интернета)
     if gender == "F":
         if int(age) > 40:
             ideal = ((height - 90) - ((height - 150) / 2))
@@ -15,23 +16,21 @@ def ideal_weight(height, age, gender, body_type):
             return int(ideal) + body_type
 
 
-def goal(height, weight, age, gender, body_type):
+def goal(height, weight, age, gender, body_type):  # расчет того на сколько кг нужно изменить свой вес
     return ideal_weight(height, age, gender, body_type) - int(weight)
 
 
-def set_category(gender, goal):
-    if int(goal) < -20:
+def set_category(gender, goal):  #определение категории человека по массе
+    if int(goal) < -13:
         category = gender + "VF"  # very fat
-    elif int(goal) < -10:
+    elif (int(goal) < -5) and (int(goal) > -13):
         category = gender + "F"  # fat
-    elif int(goal) > 20:
+    elif int(goal) > 15:
         category = gender + "VT"  # very thin
-    elif int(goal) > 10:
+    elif int(goal) > 5:
         category = gender + "T"  # thin
-    elif int(goal) in range(-5, 5):
+    elif (int(goal) < 5) and (int(goal) > -5):
         category = gender + "N"  # normal
-    elif int(goal) in range(-1, 2):
-        category = gender + "S"  # sportsmen(атлет)
     else:
         category = gender + "N"
     return category

@@ -13,14 +13,12 @@ import users_resource
 import traning_resource
 from sport_func import ideal_weight, set_category, goal
 
-
-
-
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 api = Api(app)
 app.config["SECRET_KEY"] = "secret-key"
+
 
 def main():
     db_session.global_init("db/blogs.sqlite")
@@ -41,11 +39,14 @@ def load_user(user_id):
 
 @login_required
 @app.route("/lk")
-def lk():
-    return render_template("lk.html", user=current_user, title="Личный кабинет", goal=goal(current_user.height, current_user.weight,
-                                                                                           current_user.age, current_user.gender, current_user.body_type))
+def lk():  # личный кабинет пользователя
+    return render_template("lk.html", user=current_user, title="Личный кабинет",
+                           goal=goal(current_user.height, current_user.weight,
+                                     current_user.age, current_user.gender, current_user.body_type))
+
+
 @app.route("/add_program", methods=["GET", "POST"])
-def add_program():
+def add_program():  # страница добавления программы тренировок
     form = TraningForm()
     if form.validate_on_submit():
         session = db_session.create_session()
@@ -62,7 +63,7 @@ def add_program():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login():  # страница авторизации
     form = LoginForm()
     if form.validate_on_submit():
         session = db_session.create_session()
@@ -76,9 +77,8 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def reqister():  # страница регистрации
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -110,7 +110,7 @@ def reqister():
 
 @login_required
 @app.route("/programs")
-def programs():
+def programs():  # вывод программы соотвествующих категории пользователя
     session = db_session.create_session()
     prog = session.query(Traning)
     goas = goal(current_user.height, current_user.weight, current_user.age, current_user.gender, current_user.body_type)
@@ -124,7 +124,8 @@ def programs():
             hk += "нормального веса"
         elif "VF" in set_category(current_user.gender, goas):
             hk += "очень полный"
-        elif "VT" in set_category(current_user.gender, goas):
+        elif "VT" in set_category(current_user.gender,
+                                  goas):  # перевод категории пользователя в читаемый для человека формат
             hk += "очень худой"
         elif "F" in set_category(current_user.gender, goas):
             hk += "полный"
@@ -147,46 +148,55 @@ def programs():
             hk += "худая"
 
     return render_template("programs.html", prog=prog, category=set_category(current_user.gender, goas), hk=hk)
+# возвращаем шаблон со списком программ для пользователя и его катрегорией в читаемом формате
+
 
 @login_required
 @app.route('/change', methods=['GET', 'POST'])
-def change():
+def change():  # изменение параметров пользователя
     session = db_session.create_session()
     form = ChangeForm()
     if form.validate_on_submit():
-        rows = session.query(User).filter(User.id == current_user.id).update({'weight': form.weight.data, "height": form.height.data, "age": form.age.data, "need": form.need.data})
-        session.commit()
+        rows = session.query(User).filter(User.id == current_user.id).update(
+            {'weight': form.weight.data, "height": form.height.data, "age": form.age.data, "need": form.need.data})
+        session.commit()  # изменение параметров пользователя в БД
         return redirect('/lk')
     return render_template('change.html', title='Изменение', form=form, current_user=current_user)
-
+    # текущий пользователь передан для значений по умолчанию
 
 
 @app.route("/search", methods=['GET', 'POST'])
-def search():
+def search():  # страница поиска программы тренировок
     session = db_session.create_session()
     form = SearchForm()
     if form.validate_on_submit():
-        if form.duration.data != "":
+        if form.duration.data != "":  # если не указана длительность программы, ищем только по категории
             if form.category.data == "ALL":
                 prog = session.query(Traning).filter(Traning.duration == int(form.duration.data)).all()
             else:
-                prog = session.query(Traning).filter(Traning.duration == int(form.duration.data), Traning.category == form.category.data).all()
-            return render_template("finded.html", prog=prog)
-        elif not (form.duration.data != ""):
+                prog = session.query(Traning).filter(Traning.duration == int(form.duration.data),
+                                                     Traning.category == form.category.data).all()
+            return render_template("finded.html", prog=prog)  # возвращаем шаблон со списком программ
+        elif not (form.duration.data != ""):  # ищем программы с длительностью и категорией указаной пользователем
             if form.category.data != "ALL":
                 prog = session.query(Traning).filter(Traning.category == form.category.data).all()
             else:
                 prog = session.query(Traning).all()
-            return render_template("finded.html", prog=prog)
-    return render_template("search.html", title="Поиск", form=form, prog=False)
+            return render_template("finded.html", prog=prog)  # возвращаем шаблон со списком программ
+    return render_template("search.html", title="Поиск", form=form)
+
+
 @app.route("/")
-def title():
+def title():  # главная страница
     return render_template("title.html")
+
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect("/")
+
 
 if __name__ == '__main__':
     main()

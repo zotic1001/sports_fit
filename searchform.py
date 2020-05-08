@@ -3,7 +3,7 @@ from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm, Form
 
 
-class SearchForm(FlaskForm):
+class SearchForm(FlaskForm):  # форма поиска по программам тренировок
     category = SelectField("Для кого эта программа",
                            choices=[("MN", "Мужчина нормального веса"), ("MF", "Мужчина полный"),
                                     ("MVF", "Мужчина очень полный"), ("MT", "Мужчина худой"),

@@ -26,14 +26,14 @@ def abort_if_user_not_found(user_id):
         abort(404, message=f"User {user_id} not found")
 
 class UsersResource(Resource):
-    def get(self, user_id):
+    def get(self, user_id):  # получить пользователя по id
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
         user = session.query(User).get(user_id)
         return jsonify({'user': user.to_dict(
             only=('id', 'name', 'email', "age", "height", "weight", "gender"))})
 
-    def delete(self, user_id):
+    def delete(self, user_id):  # удалить пользователя по id
         abort_if_user_not_found(user_id)
         session = db_session.create_session()
         user = session.query(User).get(user_id)
@@ -42,14 +42,14 @@ class UsersResource(Resource):
         return jsonify({'success': 'OK'})
 
 
-class UserListResource(Resource):
+class UserListResource(Resource):  # получить всех пользователей
     def get(self):
         session = db_session.create_session()
         user = session.query(User).all()
         return jsonify({'user': [item.to_dict(
             only=('id', 'name', "email", "age", "height", "weight", "gender")) for item in user]})
 
-    def post(self):
+    def post(self):   # добавить пользователя
         args = parser.parse_args()
         session = db_session.create_session()
         user = User(
