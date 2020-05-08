@@ -8,10 +8,10 @@ from changeform import ChangeForm
 from training_form import TraningForm
 from searchform import SearchForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_restful import reqparse, abort, Api, Resource
+from flask_restful import Api
 import users_resource
 import traning_resource
-from sport_func import ideal_weight, set_category, goal
+from sport_func import set_category, goal
 
 app = Flask(__name__)
 login_manager = LoginManager()
